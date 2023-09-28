@@ -8,6 +8,11 @@ module.exports = {
   darkMode: ["class"],
   theme: {
     extend: {
+      colors: {
+        green: '#5C8374',
+        blue: '#263E52',
+        yellow: '#FBCC6C'
+      },
       typography: {
         DEFAULT: {
           css: {
