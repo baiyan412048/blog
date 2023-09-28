@@ -11,10 +11,15 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
+            '--tw-prose-code': '#FFFFFF',
+            '--tw-prose-pre-bg': '#263E52',
+            '--tw-prose-invert-code': '#FFFFFF',
+            '--tw-prose-invert-pre-bg': '#263E52',
             code: {
-              color: '#111b27',
-              backgroundColor: '#e3eaf2',
+              color: 'var(--tw-prose-code)',
+              backgroundColor: 'var(--tw-prose-pre-bg)',
               padding: '0 0.25rem',
+              fontWeight: '400',
               borderRadius: '0.25rem'
             },
             'code::before': {
@@ -24,25 +29,25 @@ module.exports = {
               content: 'none',
             },
             'a code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
             'h1 code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
             'h2 code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
             'h3 code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
             'h4 code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
             'blockquote code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
             'thead th code': {
-              color: '#111b27',
+              color: 'var(--tw-prose-code)',
             },
           }
         }

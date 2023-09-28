@@ -1,5 +1,5 @@
 import Link from "next/link"
-import './styles/prism-coldark-cold.css';
+import './styles/prism-lucario.css';
 import './styles/prism-plus.css';
 import "./globals.css"
 import { Inter } from "next/font/google"
