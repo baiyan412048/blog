@@ -1,5 +1,5 @@
 import Link from "next/link"
-import './styles/prism-lucario.css';
+import './styles/prism-base16-ateliersulphurpool.light.css';
 import './styles/prism-plus.css';
 import "./globals.css"
 import { Inter } from "next/font/google"

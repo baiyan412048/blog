@@ -36,6 +36,14 @@ It adds a new `prose` class that you can slap on any block of vanilla HTML conte
 ---
 
 ```ts {1-5}
+// basic usage
+import { ThemeUIProvider } from 'theme-ui'
+import theme from './theme'
+
+export default (props) => (
+  <ThemeUIProvider theme={theme}>{props.children}</ThemeUIProvider>
+)
+
 export async function generateStaticParams(): Promise<PostProps["params"][]> {
   return allPosts.map((post) => ({
     slug: post.slugAsParams.split("/"),

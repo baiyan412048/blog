@@ -16,10 +16,10 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            '--tw-prose-code': '#FFFFFF',
-            '--tw-prose-pre-bg': '#263E52',
-            '--tw-prose-invert-code': '#FFFFFF',
-            '--tw-prose-invert-pre-bg': '#263E52',
+            '--tw-prose-code': '#5e6687',
+            '--tw-prose-pre-bg': '#cce5dc',
+            '--tw-prose-invert-code': '#5e6687',
+            '--tw-prose-invert-pre-bg': '#cce5dc',
             code: {
               color: 'var(--tw-prose-code)',
               backgroundColor: 'var(--tw-prose-pre-bg)',
