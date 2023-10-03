@@ -2,12 +2,12 @@ import Link from 'next/link'
 import './styles/prism-base16-ateliersulphurpool.light.css'
 import './styles/prism-plus.css'
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Noto_Sans_JP } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Analytics } from '@/components/analytics'
 import { ModeToggle } from '@/components/mode-toggle'
 
-const inter = Inter({ subsets: ['latin'] })
+const notoSansJP = Noto_Sans_JP({ subsets: ['latin'] })
 
 export const metadata = {
   title: "Eric's Blog",
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en'>
       <body
-        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${inter.className}`}
+        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${notoSansJP.className}`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <div className='max-w-4xl mx-auto py-4'>
@@ -30,8 +30,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <div className='flex items-center justify-between'>
                 <ModeToggle />
                 <nav className='ml-auto text-sm font-medium space-x-6'>
-                  <Link href='/'>Home</Link>
-                  <Link href='/about'>About</Link>
+                  <Link href='/'>首頁</Link>
+                  <Link href='/about'>關於</Link>
                 </nav>
               </div>
             </header>
