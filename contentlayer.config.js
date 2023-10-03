@@ -1,64 +1,69 @@
-import { defineDocumentType, makeSource } from "contentlayer/source-files"
+import { defineDocumentType, makeSource } from 'contentlayer/source-files'
 import rehypePrism from 'rehype-prism-plus'
-import remarkGfm from 'remark-gfm';
+import remarkGfm from 'remark-gfm'
+import rehypeSlug from 'rehype-slug'
 
 /** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
   slug: {
-    type: "string",
-    resolve: (doc) => `/${doc._raw.flattenedPath}`,
+    type: 'string',
+    resolve: (doc) => `/${doc._raw.flattenedPath}`
   },
   slugAsParams: {
-    type: "string",
-    resolve: (doc) => doc._raw.flattenedPath.split("/").slice(1).join("/"),
-  },
+    type: 'string',
+    resolve: (doc) => doc._raw.flattenedPath.split('/').slice(1).join('/')
+  }
 }
 
 export const Page = defineDocumentType(() => ({
-  name: "Page",
+  name: 'Page',
   filePathPattern: `pages/**/*.mdx`,
-  contentType: "mdx",
+  contentType: 'mdx',
   fields: {
     title: {
-      type: "string",
-      required: true,
+      type: 'string',
+      required: true
     },
     description: {
-      type: "string",
-    },
+      type: 'string'
+    }
   },
-  computedFields,
+  computedFields
 }))
 
 export const Post = defineDocumentType(() => ({
-  name: "Post",
+  name: 'Post',
   filePathPattern: `posts/**/*.mdx`,
-  contentType: "mdx",
+  contentType: 'mdx',
   fields: {
     title: {
-      type: "string",
-      required: true,
+      type: 'string',
+      required: true
     },
     description: {
-      type: "string",
+      type: 'string'
     },
     date: {
-      type: "date",
-      required: true,
-    },
+      type: 'date',
+      required: true
+    }
   },
-  computedFields,
+  computedFields
 }))
 
 export default makeSource({
-  contentDirPath: "./content",
+  contentDirPath: './content',
   documentTypes: [Post, Page],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [[
-      rehypePrism, {
-        ignoreMissing: false
-      }
-    ]]
+    rehypePlugins: [
+      rehypeSlug,
+      [
+        rehypePrism,
+        {
+          ignoreMissing: false
+        }
+      ]
+    ]
   }
 })
