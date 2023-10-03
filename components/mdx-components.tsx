@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import { useMDXComponent } from 'next-contentlayer/hooks'
+import Heading from './custom/heading'
 
 const components = {
-  Image
+  Image,
+  h2: Heading.h2,
+  h3: Heading.h3
 }
 
 interface MdxProps {
@@ -12,5 +15,7 @@ interface MdxProps {
 export function Mdx({ code }: MdxProps) {
   const Component = useMDXComponent(code)
 
+  // @ts-ignore
+  // TODO: custom heading type error
   return <Component components={components} />
 }
