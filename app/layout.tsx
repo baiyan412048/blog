@@ -35,7 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </nav>
               </div>
             </header>
-            <h1 className='px-4 py-4 font-bold text-center text-4xl text-green'>
+            <h1 className='p-4 font-bold text-center text-4xl text-green'>
               Eric&apos;s Blog
             </h1>
             <main className='px-4 mt-6'>{children}</main>
