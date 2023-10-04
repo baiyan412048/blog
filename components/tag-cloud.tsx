@@ -5,7 +5,7 @@ type Props = {
   className: string
 }
 
-const TagsCloud = ({ tags, className }: Props) => {
+const TagCloud = ({ tags, className }: Props) => {
   return (
     <div className={`sticky top-18 ${className}`}>
       <p className='mb-5 text-lg font-semibold text-gray-900 transition-colors dark:text-gray-100'>
@@ -22,4 +22,4 @@ const TagsCloud = ({ tags, className }: Props) => {
   )
 }
 
-export default TagsCloud
+export default TagCloud

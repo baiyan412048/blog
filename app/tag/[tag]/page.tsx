@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { allPosts } from '@/.contentlayer/generated'
-import TagsCloud from '@/components/tags-cloud'
+import TagCloud from '@/components/tag-cloud'
 
 interface TagProps {
   params: {
@@ -66,7 +66,7 @@ export default function TagPage({ params }: TagProps) {
               </li>
             ))}
         </ul>
-        <TagsCloud tags={tags()} className={'w-3/12'} />
+        <TagCloud tags={tags()} className={'w-3/12'} />
       </div>
     </>
   )

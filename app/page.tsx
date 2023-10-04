@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { allPosts } from '@/.contentlayer/generated'
-import TagsCloud from '@/components/tags-cloud'
+import TagCloud from '@/components/tag-cloud'
 
 export default function Home() {
   const tags = () => {
@@ -29,7 +29,7 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <TagsCloud tags={tags()} className={'w-3/12'} />
+      <TagCloud tags={tags()} className={'w-3/12'} />
     </div>
   )
 }
