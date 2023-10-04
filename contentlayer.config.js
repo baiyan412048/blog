@@ -2,6 +2,7 @@ import { defineDocumentType, makeSource } from 'contentlayer/source-files'
 import rehypePrism from 'rehype-prism-plus'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
+import rehypeCodeTitles from 'rehype-code-titles'
 
 /** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
@@ -65,6 +66,7 @@ export default makeSource({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,
+      rehypeCodeTitles,
       [
         rehypePrism,
         {

@@ -13,3 +13,20 @@
   padding-left: 0;
   white-space: pre-wrap;
 }
+
+.rehype-code-title {
+  padding: 0 1em;
+  background-color: #88b7a5;
+  border-radius: 0.375rem 0.375rem 0 0;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-family: Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono',
+    'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono',
+    'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L',
+    'Courier New', Courier, monospace;
+}
+
+.rehype-code-title + pre {
+  margin-top: 0;
+  border-radius: 0 0 0.375rem 0.375rem;
+}
