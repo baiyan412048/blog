@@ -26,11 +26,12 @@ module.exports = {
             '--tw-prose-invert-pre-bg': '#cce5dc',
             maxWidth: '100%',
             code: {
+              padding: '0 0.25rem',
               color: 'var(--tw-prose-code)',
               backgroundColor: 'var(--tw-prose-pre-bg)',
-              padding: '0 0.25rem',
+              borderRadius: '0.25rem',
               fontWeight: '400',
-              borderRadius: '0.25rem'
+              lineHeight: 'normal'
             },
             'code::before': {
               content: 'none'

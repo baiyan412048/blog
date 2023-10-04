@@ -1,11 +1,13 @@
 import Image from 'next/image'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import Heading from './custom/heading'
+import Checkbox from './custom/checkbox'
 
 const components = {
   Image,
   h2: Heading.h2,
-  h3: Heading.h3
+  h3: Heading.h3,
+  input: Checkbox
 }
 
 interface MdxProps {
