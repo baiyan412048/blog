@@ -2,12 +2,9 @@ import Link from 'next/link'
 import './styles/prism-base16-ateliersulphurpool.light.css'
 import './styles/prism-plus.css'
 import './globals.css'
-import { Noto_Sans_JP } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Analytics } from '@/components/analytics'
 import { ModeToggle } from '@/components/mode-toggle'
-
-const notoSansJP = Noto_Sans_JP({ subsets: ['latin'] })
 
 export const metadata = {
   title: "Eric's Blog",
@@ -22,7 +19,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en'>
       <body
-        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${notoSansJP.className}`}
+        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50`}
       >
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <div className='max-w-4xl mx-auto py-4'>
