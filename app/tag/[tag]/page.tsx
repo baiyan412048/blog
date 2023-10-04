@@ -33,7 +33,7 @@ export async function generateStaticParams(): Promise<TagProps['params'][]> {
 // }
 
 export default function TagPage({ params }: TagProps) {
-  const { tag } = params
+  const tag = decodeURIComponent(params.tag)
   const tags = () => {
     const arr = allPosts.reduce<string[]>((acc, post) => {
       post.tags.forEach((tag) => {
