@@ -1,6 +1,9 @@
 import Link from 'next/link'
+
 import { allPosts } from '@/.contentlayer/generated'
 import TagCloud from '@/components/tag-cloud'
+
+import type { Metadata } from 'next'
 
 interface TagProps {
   params: {
@@ -9,42 +12,32 @@ interface TagProps {
 }
 
 export async function generateStaticParams(): Promise<TagProps['params'][]> {
-  return allPosts
-    .map((post) => post.tags)
-    .flat()
-    .map((tag) => ({
-      tag: tag
-    }))
+  return allPosts.flatMap((post) => post.tags).map((tag) => ({ tag }))
 }
 
-// export async function generateMetadata({
-//   params
-// }: TagProps): Promise<Metadata> {
-//   const post = await getPostFromParams(params)
+export async function generateMetadata({
+  params
+}: TagProps): Promise<Metadata> {
+  const { tag } = params
 
-//   if (!post) {
-//     return {}
-//   }
-
-//   return {
-//     title: post.title,
-//     description: post.description
-//   }
-// }
+  return {
+    title: `${tag} - Eric's Blog`,
+    description: `現在所在的 Tag 為 ${tag}`
+  }
+}
 
 export default function TagPage({ params }: TagProps) {
+  // 網址的 unicode 轉換
   const tag = decodeURIComponent(params.tag)
-  const tags = () => {
-    const arr = allPosts.reduce<string[]>((acc, post) => {
-      post.tags.forEach((tag) => {
-        if (!acc.includes(tag)) {
-          acc.push(tag)
-        }
-      })
-      return acc
-    }, [])
-    return arr
-  }
+  // 不重複陣列
+  const tags = allPosts.reduce<string[]>((acc, post) => {
+    post.tags.forEach((tag) => {
+      if (!acc.includes(tag)) {
+        acc.push(tag)
+      }
+    })
+    return acc
+  }, [])
 
   return (
     <>
@@ -66,7 +59,7 @@ export default function TagPage({ params }: TagProps) {
               </li>
             ))}
         </ul>
-        <TagCloud tags={tags()} className={'w-3/12'} />
+        <TagCloud tags={tags} className={'w-3/12'} />
       </div>
     </>
   )

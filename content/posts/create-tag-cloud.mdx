@@ -1,0 +1,253 @@
+---
+title: Tag cloud 實作
+description: 實作 Tag cloud 的方式及過程紀錄
+date: '2023-10-04'
+tags:
+  - Next
+  - DIY
+---
+
+考慮到短期內文章數不會有太多篇，也還沒有想到如果真的要使用分類會用怎樣的方式，  
+所以暫以 `Tag` 的方式去分類，文章數少的情況應該還過得去，
+紀錄一下怎麼實作 Tag cloud 的功能，題外話 : 分類在 DIY 真幽默。
+
+## 解決 Routes 的問題
+
+目前我們 (我與我) 部落格是使用 [SSG (Static Site Generation)](https://israynotarray.com/other/20210529/2519649612/) 的渲染方式，  
+而 `SSG` 定義 `Routes` 時需要使用 [generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params#single-dynamic-segment) [^1] 把所有 Routes 定義出來，  
+照著官網的範例就可以產生 `/product/1`、`/product/2`、`/product/3` 對應的 url，  
+若進到 `/product/4` 則會顯示 404 ，因為 `Next` 在 `build` 的時候沒有產出 `/product/4` 這個 url 。
+
+```tsx
+export function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }]
+}
+
+// Three versions of this page will be statically generated
+// using the `params` returned by `generateStaticParams`
+// - /product/1
+// - /product/2
+// - /product/3
+export default function Page({ params }: { params: { id: string } }) {
+  const { id } = params
+  // ...
+}
+```
+
+## 實作
+
+### 設定文章 Tag
+
+要設定每一篇文章的 Tag ，首先需要在 `contentlayer.config.js` 內設定 `fields` ，
+
+```js:contentlayer.config.js showLineNumbers {17-23}
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `posts/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: {
+      type: 'string',
+      required: true
+    },
+    description: {
+      type: 'string'
+    },
+    date: {
+      type: 'date',
+      required: true
+    },
+    tags: {
+      type: 'list',
+      of: {
+        type: 'string'
+      },
+      required: true
+    }
+  },
+  // ...
+}))
+```
+
+在一篇文章中，Tag 可以有複數個，所以我們將 `type` 設定為 `list` [^2]，然後裡面的值為 `string`，
+在文章裡面就可以設定對應的 Tag ，
+
+```md showLineNumbers {5-7}
+---
+title: Tag cloud 實作
+description: 實作 Tag cloud 的方式及過程紀錄
+date: '2023-10-04'
+tags:
+  - Next
+  - DIY
+---
+```
+
+### 建立 Tag Page
+
+我所構想的是，點擊側邊 Tag 會導到對應的頁面，然後顯示對應 Tag 的所有文章，  
+所以我們需要建立對應的 Routes，設定方式可參考 [pages-and-layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts)，
+
+```
+app
+├─ tag
+|   └─ [tag]
+|        └─ page.tsx
+```
+
+這樣所產生的 url 就會是 `/tag/[tag]`。
+
+```tsx:tag/[tag]/Page.tsx showLineNumbers {2, 11-13}
+import Link from 'next/link'
+import { allPosts } from '@/.contentlayer/generated'
+import TagCloud from '@/components/tag-cloud'
+
+interface TagProps {
+  params: {
+    tag: string
+  }
+}
+
+export async function generateStaticParams(): Promise<TagProps['params'][]> {
+  return allPosts.flatMap((post) => post.tags).map((tag) => ({ tag }))
+}
+
+// ...
+```
+
+再來我們就在 page.tsx 中利用前面提到的 `generateStaticParams`，來設定 **「所有可能」** 的路由，  
+我們先取得每篇文章所有的 `tags` ，因為每篇文章的 `tags` 參數都會是 `Array`，我們需要先使用 `.map()` 整理成這樣的陣列 `[['a', 'b'], ['c', 'd']]` ，再使用 `.flat()` 重新整理成 `['a', 'b', 'c', 'd']` ，而這兩件事情有更簡單的語法 `.flatMap()` [Array.prototype.flatMap()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) 。
+
+設定好 Routes 後，只要在網址輸入錯誤的 tag 就會導到 404 page，例如 /tag/test 。
+
+### 建立 Tag cloud Component
+
+元件的內容很簡單，把整理好的 `Tags` 當作 `props` 傳進來 ，然後渲染出來。
+
+```tsx:tag-cloud.tsx showLineNumbers
+import Link from 'next/link'
+
+type Props = {
+  tags: string[]
+  className: string
+}
+
+const TagCloud = ({ tags, className }: Props) => {
+  return (
+    <div className={`sticky top-18 ${className}`}>
+      <p className='mb-5 text-lg font-semibold text-gray-900 transition-colors dark:text-gray-100'>
+        Tags
+      </p>
+      <ul className='flex flex-wrap'>
+        {tags.map((tag) => (
+          <li key={tag} className='mr-2 mb-2'>
+            <Link href={`tag/${tag}`}># {tag}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export default TagCloud
+```
+
+在兩個地方會需要用到這個 component ，一個是我們剛剛建立好的 Tag page、一個是文章總攬 `app/page.tsx`，先來看 Tag page。
+
+```tsx:tag/[tag]/Page.tsx showLineNumbers {4}
+// ...
+
+export default function TagPage({ params }: TagProps) {
+  const tag = decodeURIComponent(params.tag)
+  const tags = allPosts.reduce<string[]>((acc, post) => {
+    post.tags.forEach((tag) => {
+      if (!acc.includes(tag)) {
+        acc.push(tag)
+      }
+    })
+    return acc
+  }, [])
+
+  return (
+    <>
+      <h2 className='mb-6 font-bold text-center text-2xl'>
+        Tag : <span>{tag}</span>
+      </h2>
+      <div className='flex items-start'>
+        <ul className='space-y-10 pr-6 w-9/12'>
+          {allPosts
+            .filter((post) => post.tags.includes(tag))
+            .map((post) => (
+              <li className='py-1 pl-2 border-l-2 border-green' key={post._id}>
+                <Link className='px-2 block space-y-2' href={post.slug}>
+                  <h2 className='text-xl font-bold'>{post.title}</h2>
+                  {post.description && (
+                    <p className='text-sm'>{post.description}</p>
+                  )}
+                </Link>
+              </li>
+            ))}
+        </ul>
+        <TagCloud tags={tags} className={'w-3/12'} />
+      </div>
+    </>
+  )
+}
+```
+
+`params` 會自動夾帶我們一開始設定好的 Routes ，  
+ `[tag]` 就是我們設定好的參數，如果改成 `[test]` 則 `params` 內就會是 params.test 的參數，
+而這個參數就是來自網址 `/tag/[tag]` ，例如網址是 `/tag/123`，`params.tag` 的值就是 **123**
+
+```text showLineNumbers {3}
+app
+├─ tag
+|   └─ [tag]
+|        └─ page.tsx
+```
+
+而使用 [`decodeURIComponent`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent) 是因為網址若使用中文，params 傳進來的值會變成中文字符的 `Unicode`，需要轉換回來正常的中文字。
+
+剩下的就是依據 `params.tag` 篩選出對應 tag 的文章，以及將所有文章的 tag 整理成不重複值的陣列傳到 TagCloud component 。
+
+而文章總攬也是大同小異，只差在我們不需要篩選文章。
+
+```tsx
+export default function Home() {
+  const tags = allPosts.reduce<string[]>((acc, post) => {
+    post.tags.forEach((tag) => {
+      if (!acc.includes(tag)) {
+        acc.push(tag)
+      }
+    })
+    return acc
+  }, [])
+
+  return (
+    <div className='flex items-start'>
+      <ul className='space-y-10 pr-6 w-9/12'>
+        {allPosts.map((post, index) => (
+          <li className='py-1 pl-2 border-l-2 border-green' key={post._id}>
+            <Link className='px-2 block space-y-2' href={post.slug}>
+              <h2 className='text-xl font-bold'>{post.title}</h2>
+              {post.description && (
+                <p className='text-sm'>{post.description}</p>
+              )}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <TagCloud tags={tags} className={'w-3/12'} />
+    </div>
+  )
+}
+```
+
+### 完成
+
+完成後，就可以在這兩個頁面看到 Tag cloud，點擊 Tag 後就可以導到對應的頁面顯示文章列表 🎉
+
+---
+
+[^1]: 補充參考 [梳理NextJS13两种路由下的不同渲染方式：SSG，ISR，SSR，RSC](https://cloud.tencent.com/developer/article/2321765?areaId=106005)
+[^2]: [Field Types Reference](https://contentlayer.dev/docs/reference/source-files/field-types-defe41e9#list)

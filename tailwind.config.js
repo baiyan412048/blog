@@ -25,6 +25,9 @@ module.exports = {
             '--tw-prose-invert-code': '#5e6687',
             '--tw-prose-invert-pre-bg': '#cce5dc',
             maxWidth: '100%',
+            pre: {
+              color: 'inherit'
+            },
             code: {
               padding: '0 0.25rem',
               color: 'var(--tw-prose-code)',

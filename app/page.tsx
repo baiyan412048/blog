@@ -3,17 +3,14 @@ import { allPosts } from '@/.contentlayer/generated'
 import TagCloud from '@/components/tag-cloud'
 
 export default function Home() {
-  const tags = () => {
-    const arr = allPosts.reduce<string[]>((acc, post) => {
-      post.tags.forEach((tag) => {
-        if (!acc.includes(tag)) {
-          acc.push(tag)
-        }
-      })
-      return acc
-    }, [])
-    return arr
-  }
+  const tags = allPosts.reduce<string[]>((acc, post) => {
+    post.tags.forEach((tag) => {
+      if (!acc.includes(tag)) {
+        acc.push(tag)
+      }
+    })
+    return acc
+  }, [])
 
   return (
     <div className='flex items-start'>
@@ -29,7 +26,7 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <TagCloud tags={tags()} className={'w-3/12'} />
+      <TagCloud tags={tags} className={'w-3/12'} />
     </div>
   )
 }
