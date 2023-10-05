@@ -1,7 +1,7 @@
 ---
 title: Tag cloud 實作
 description: 實作 Tag cloud 的方式及過程紀錄
-date: '2023-10-04'
+date: '2023-10-05'
 tags:
   - Next
   - DIY
@@ -9,12 +9,12 @@ tags:
 
 考慮到短期內文章數不會有太多篇，也還沒有想到如果真的要使用分類會用怎樣的方式，  
 所以暫以 `Tag` 的方式去分類，文章數少的情況應該還過得去，
-紀錄一下怎麼實作 Tag cloud 的功能，題外話 : 分類在 DIY 真幽默。
+紀錄一下怎麼實作 Tag cloud 的功能，<small>題外話 : 分類在 DIY 真幽默</small>。
 
 ## 解決 Routes 的問題
 
-目前我們 (我與我) 部落格是使用 [SSG (Static Site Generation)](https://israynotarray.com/other/20210529/2519649612/) 的渲染方式，  
-而 `SSG` 定義 `Routes` 時需要使用 [generateStaticParams](https://nextjs.org/docs/app/api-reference/functions/generate-static-params#single-dynamic-segment) [^1] 把所有 Routes 定義出來，  
+目前我們 <small>(我與我)</small> 部落格是使用 <a href="https://israynotarray.com/other/20210529/2519649612/" target="_blank">SSG (Static Site Generation)</a> 的渲染方式，  
+而 `SSG` 定義 `Routes` 時需要使用 <a href="https://nextjs.org/docs/app/api-reference/functions/generate-static-params#single-dynamic-segment" target="_blank">generateStaticParams</a> [^1] 把所有 Routes 定義出來，  
 照著官網的範例就可以產生 `/product/1`、`/product/2`、`/product/3` 對應的 url，  
 若進到 `/product/4` 則會顯示 404 ，因為 `Next` 在 `build` 的時候沒有產出 `/product/4` 這個 url 。
 
@@ -86,7 +86,7 @@ tags:
 ### 建立 Tag Page
 
 我所構想的是，點擊側邊 Tag 會導到對應的頁面，然後顯示對應 Tag 的所有文章，  
-所以我們需要建立對應的 Routes，設定方式可參考 [pages-and-layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts)，
+所以我們需要建立對應的 Routes，設定方式可參考 <a href="https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts" target="_blank">pages-and-layouts</a> ，
 
 ```
 app
@@ -116,7 +116,7 @@ export async function generateStaticParams(): Promise<TagProps['params'][]> {
 ```
 
 再來我們就在 page.tsx 中利用前面提到的 `generateStaticParams`，來設定 **「所有可能」** 的路由，  
-我們先取得每篇文章所有的 `tags` ，因為每篇文章的 `tags` 參數都會是 `Array`，我們需要先使用 `.map()` 整理成這樣的陣列 `[['a', 'b'], ['c', 'd']]` ，再使用 `.flat()` 重新整理成 `['a', 'b', 'c', 'd']` ，而這兩件事情有更簡單的語法 `.flatMap()` [Array.prototype.flatMap()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) 。
+我們先取得每篇文章所有的 `tags` ，因為每篇文章的 `tags` 參數都會是 `Array`，我們需要先使用 `.map()` 整理成這樣的陣列 `[['a', 'b'], ['c', 'd']]` ，再使用 `.flat()` 重新整理成 `['a', 'b', 'c', 'd']` ，而這兩件事情有更簡單的語法 `.flatMap()` <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap" target="_blank">`Array.prototype.flatMap()`</a> 。
 
 設定好 Routes 後，只要在網址輸入錯誤的 tag 就會導到 404 page，例如 /tag/test 。
 
@@ -206,7 +206,7 @@ app
 |        └─ page.tsx
 ```
 
-而使用 [`decodeURIComponent`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent) 是因為網址若使用中文，params 傳進來的值會變成中文字符的 `Unicode`，需要轉換回來正常的中文字。
+而使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent" target="_blank">`decodeURIComponent`</a> 是因為網址若使用中文，params 傳進來的值會變成中文字符的 `Unicode`，需要轉換回來正常的中文字。
 
 剩下的就是依據 `params.tag` 篩選出對應 tag 的文章，以及將所有文章的 tag 整理成不重複值的陣列傳到 TagCloud component 。
 
@@ -249,5 +249,11 @@ export default function Home() {
 
 ---
 
-[^1]: 補充參考 [梳理NextJS13两种路由下的不同渲染方式：SSG，ISR，SSR，RSC](https://cloud.tencent.com/developer/article/2321765?areaId=106005)
-[^2]: [Field Types Reference](https://contentlayer.dev/docs/reference/source-files/field-types-defe41e9#list)
+[^1]: 補充參考 <a href="https://cloud.tencent.com/developer/article/2321765?areaId=106005" target="_blank">梳理NextJS13两种路由下的不同渲染方式：SSG，ISR，SSR，RSC</a>
+[^2]:
+    <a
+      href='https://contentlayer.dev/docs/reference/source-files/field-types-defe41e9#list'
+      target='_blank'
+    >
+      Field Types Reference
+    </a>

@@ -48,6 +48,7 @@ export default function TagPage({ params }: TagProps) {
         <ul className='space-y-10 pr-6 w-9/12'>
           {allPosts
             .filter((post) => post.tags.includes(tag))
+            .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
             .map((post) => (
               <li className='py-1 pl-2 border-l-2 border-green' key={post._id}>
                 <Link className='px-2 block space-y-2' href={post.slug}>
