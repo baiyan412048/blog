@@ -8,26 +8,21 @@ tags:
 ---
 
 考慮到短期內文章數不會有太多篇，也還沒有想到如果真的要使用分類會用怎樣的方式，  
-所以暫以 `Tag` 的方式去分類，文章數少的情況應該還過得去，
-紀錄一下怎麼實作 Tag cloud 的功能，<small>題外話 : 分類在 DIY 真幽默</small>。
+所以暫以 Tag 的方式去分類，文章數少的情況應該還過得去，
+紀錄一下怎麼實作 Tag cloud 的功能。<small>(題外話 : 分類在 DIY 真幽默)</small>。
 
 ## 解決 Routes 的問題
 
 目前我們 <small>(我與我)</small> 部落格是使用 <a href="https://israynotarray.com/other/20210529/2519649612/" target="_blank">SSG (Static Site Generation)</a> 的渲染方式，  
-而 `SSG` 定義 `Routes` 時需要使用 <a href="https://nextjs.org/docs/app/api-reference/functions/generate-static-params#single-dynamic-segment" target="_blank">generateStaticParams</a> [^1] 把所有 Routes 定義出來，  
+而 SSG 定義 Routes 時需要使用 <a href="https://nextjs.org/docs/app/api-reference/functions/generate-static-params#single-dynamic-segment" target="_blank">generateStaticParams</a> [^1] 把所有 Routes 定義出來，  
 照著官網的範例就可以產生 `/product/1`、`/product/2`、`/product/3` 對應的 url，  
-若進到 `/product/4` 則會顯示 404 ，因為 `Next` 在 `build` 的時候沒有產出 `/product/4` 這個 url 。
+若進到 `/product/4` 則會顯示 404 ，因為 Next.js 在 build 的時候沒有產出 `/product/4` 這個 url 。
 
 ```tsx
 export function generateStaticParams() {
   return [{ id: '1' }, { id: '2' }, { id: '3' }]
 }
 
-// Three versions of this page will be statically generated
-// using the `params` returned by `generateStaticParams`
-// - /product/1
-// - /product/2
-// - /product/3
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params
   // ...
@@ -88,7 +83,7 @@ tags:
 我所構想的是，點擊側邊 Tag 會導到對應的頁面，然後顯示對應 Tag 的所有文章，  
 所以我們需要建立對應的 Routes，設定方式可參考 <a href="https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts" target="_blank">pages-and-layouts</a> ，
 
-```
+```text
 app
 ├─ tag
 |   └─ [tag]
@@ -206,7 +201,7 @@ app
 |        └─ page.tsx
 ```
 
-而使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent" target="_blank">`decodeURIComponent`</a> 是因為網址若使用中文，params 傳進來的值會變成中文字符的 `Unicode`，需要轉換回來正常的中文字。
+而使用 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent" target="_blank">`decodeURIComponent()`</a> 是因為網址若使用中文，params 傳進來的值會變成中文字符的 `Unicode`，需要轉換回來正常的中文字。
 
 剩下的就是依據 `params.tag` 篩選出對應 tag 的文章，以及將所有文章的 tag 整理成不重複值的陣列傳到 TagCloud component 。
 
@@ -243,17 +238,9 @@ export default function Home() {
 }
 ```
 
-### 完成
-
 完成後，就可以在這兩個頁面看到 Tag cloud，點擊 Tag 後就可以導到對應的頁面顯示文章列表 🎉
 
 ---
 
 [^1]: 補充參考 <a href="https://cloud.tencent.com/developer/article/2321765?areaId=106005" target="_blank">梳理NextJS13两种路由下的不同渲染方式：SSG，ISR，SSR，RSC</a>
-[^2]:
-    <a
-      href='https://contentlayer.dev/docs/reference/source-files/field-types-defe41e9#list'
-      target='_blank'
-    >
-      Field Types Reference
-    </a>
+[^2]: 參考 <a href='https://contentlayer.dev/docs/reference/source-files/field-types-defe41e9#list' target='_blank'>Field Types Reference</a>

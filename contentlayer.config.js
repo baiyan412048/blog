@@ -64,15 +64,6 @@ export default makeSource({
   documentTypes: [Post, Page],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeSlug,
-      rehypeCodeTitles,
-      [
-        rehypePrism,
-        {
-          ignoreMissing: false
-        }
-      ]
-    ]
+    rehypePlugins: [rehypeSlug, rehypeCodeTitles]
   }
 })

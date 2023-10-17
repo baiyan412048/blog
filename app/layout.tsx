@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import './styles/prism-base16-ateliersulphurpool.light.css'
-import './styles/prism-plus.css'
+// import './styles/prism-base16-ateliersulphurpool.light.css'
+// import './styles/prism-plus.css'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Analytics } from '@/components/analytics'

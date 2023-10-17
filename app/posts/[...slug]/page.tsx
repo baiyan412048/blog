@@ -54,13 +54,21 @@ export default async function PostPage({ params }: PostProps) {
   return (
     <article className='py-6 flex w-full items-start prose dark:prose-invert'>
       <div className='pr-6 w-9/12'>
-        <h1 className='mb-2'>{post.title}</h1>
+        <span className='block text-sm mb-6'>{post.date.substring(0, 10)}</span>
+        <h1 className='mb-4'>{post.title}</h1>
         {post.description && (
           <p className='text-xl mt-0 text-slate-700 dark:text-slate-200'>
             {post.description}
           </p>
         )}
-        <hr className='my-4' />
+        <div className='space-x-4 text-sm'>
+          {post.tags.map((tag) => (
+            <span className='inline-block' key={tag}>
+              # {tag}
+            </span>
+          ))}
+        </div>
+        <hr className='my-6' />
         <Mdx code={post.body.code} />
       </div>
       <TableOfContents className='w-3/12' source={post.body.raw} />

@@ -20,20 +20,29 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
-            '--tw-prose-code': '#5e6687',
+            '--tw-prose-code': '#374151',
             '--tw-prose-pre-bg': '#cce5dc',
-            '--tw-prose-invert-code': '#5e6687',
+            '--tw-prose-invert-code': '#374151',
             '--tw-prose-invert-pre-bg': '#cce5dc',
             maxWidth: '100%',
             pre: {
+              marginTop: '0',
+              marginBottom: '0',
+              paddingTop: '0',
+              paddingRight: '0',
+              paddingBottom: '0',
+              paddingLeft: '0',
+              backgroundColor: 'none',
               color: 'inherit'
             },
             code: {
               padding: '0 0.25rem',
               color: 'var(--tw-prose-code)',
-              backgroundColor: 'var(--tw-prose-pre-bg)',
+              border: '1px solid #88b7a5',
+              backgroundColor: '#f2f2f2',
               borderRadius: '0.25rem',
               fontWeight: '400',
+              fontSize: '0.75rem',
               lineHeight: 'normal'
             },
             'code::before': {
