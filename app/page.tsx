@@ -19,7 +19,7 @@ export default function Home() {
           .sort((a, b) => Number(new Date(b.date)) - Number(new Date(a.date)))
           .map((post, index) => (
             <li className='py-1 pl-2 border-l-2 border-green' key={post._id}>
-              <Link className='px-2 block space-y-2' href={post.slug}>
+              <Link className='px-2 inline-block space-y-2' href={post.slug}>
                 <h2 className='text-xl font-bold'>{post.title}</h2>
                 {post.description && (
                   <p className='text-sm'>{post.description}</p>
