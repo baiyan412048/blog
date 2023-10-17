@@ -2,7 +2,7 @@
 
 import { useTheme } from 'next-themes'
 
-export function ModeToggle() {
+function ModeToggle() {
   const { setTheme, theme } = useTheme()
 
   return (
@@ -48,3 +48,5 @@ export function ModeToggle() {
     </button>
   )
 }
+
+export default ModeToggle

@@ -1,10 +1,9 @@
 import Link from 'next/link'
-// import './styles/prism-base16-ateliersulphurpool.light.css'
-// import './styles/prism-plus.css'
 import './globals.css'
-import { ThemeProvider } from '@/components/theme-provider'
-import { Analytics } from '@/components/analytics'
-import { ModeToggle } from '@/components/mode-toggle'
+import ThemeProvider from '@/components/theme-provider'
+import Analytics from '@/components/analytics'
+import ModeToggle from '@/components/mode-toggle'
+import GoTop from '@/components/go-top'
 
 export const metadata = {
   title: "Eric's Blog",
@@ -35,7 +34,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <h1 className='p-4 font-bold text-center text-4xl text-green'>
               Eric&apos;s Blog
             </h1>
-            <main className='px-4 mt-6'>{children}</main>
+            <main className='px-4 mt-6 z-10'>{children}</main>
+            <GoTop />
           </div>
           <Analytics />
         </ThemeProvider>
