@@ -1,9 +1,28 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+
 const GoTop = () => {
+  const hideClass = 'opacity-0 pointer-events-none'
+  const [state, setState] = useState(false)
+
+  useEffect(() => {
+    setState(!(document.body.scrollHeight <= window.innerHeight))
+
+    const handleScroll = () => {
+      setState(window.scrollY > 0)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <div
-      className='fixed bottom-6 right-6 flex items-center justify-center w-8 h-8 rounded shadow cursor-pointer'
+      className={`fixed bottom-6 right-6 flex items-center justify-center w-8 h-8 rounded shadow cursor-pointer ${
+        !state ? hideClass : ''
+      }`}
       onClick={(e) => {
         e.preventDefault()
         window.scrollTo({
